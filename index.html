@@ -223,6 +223,41 @@ h1 .b{color:var(--blue)}h1 .o{color:var(--orange)}h1 .g{color:var(--green)}
 .mtag{display:inline-block;font-size:.72rem;font-weight:800;color:#fff;background:var(--c);border-radius:99px;padding:0 8px;margin-right:6px;vertical-align:2px}
 .mempty{color:#aab4bb}
 
+/* ⑥ まとまり */
+.pgrid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:10px}
+.pcard{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;border:2px solid rgba(36,50,61,.15);background:#fff;
+  border-radius:16px;padding:10px 12px;font-weight:700;font-size:1.08rem;line-height:1.6;box-shadow:0 2px 8px rgba(40,60,80,.1);
+  transition:transform .15s,background .2s,box-shadow .2s;min-height:0;overflow:auto}
+.pcard:hover:not(.done){transform:translateY(-2px)}
+.pcard.sel{border-color:var(--ink);background:#fff8e1;box-shadow:0 0 0 3px #ffb74d}
+.pcard.ng{border-color:var(--red);background:#fde2e2;animation:pshake .4s}
+.pcard.done{cursor:default;border-color:var(--pc);background:var(--pbg)}
+.pcard .ctag{margin:0}
+.pbadge{font-size:.82rem;font-weight:800;color:#fff;background:var(--pc);border-radius:99px;padding:1px 10px}
+.pp0{--pc:#2b78b8;--pbg:#e3f0fa}.pp1{--pc:#d9661f;--pbg:#fdebdc}.pp2{--pc:#3a8f45;--pbg:#e3f3e2}.pp3{--pc:#b0428f;--pbg:#f9e3f1}
+.pcount{font-weight:800;font-size:.95rem;background:#fff;border-radius:99px;padding:5px 14px;box-shadow:0 2px 6px rgba(40,60,80,.1)}
+@keyframes pshake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* ⑦ 見直そう */
+.fixwrap{flex:1;min-height:0;display:grid;grid-template-columns:1.8fr 1fr;gap:14px}
+.fixwrap .box{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:4px;padding:10px 18px}
+.fpaper{background:#fff!important}
+.fpara{margin:0;font-size:1.08rem;font-weight:700;line-height:1.75;text-indent:1em}
+.fpara.noind{text-indent:0}
+.fseg{border-radius:6px;padding:2px 1px;cursor:pointer;transition:background .2s;border-bottom:3px solid transparent}
+.fseg:hover{background:#fff8e1}
+.fseg.hint{background:#fff3d6;border-bottom-color:#ffb74d}
+.fseg.miss{background:#fde2e2;border-bottom-color:var(--red)}
+.fseg.found{background:var(--green-bg);border-bottom-color:var(--green);cursor:default}
+.ffix{text-indent:0;font-size:.9rem;font-weight:700;color:var(--green);background:var(--green-bg);border-radius:10px;padding:2px 10px;margin:0 0 2px;line-height:1.5;animation:fade .35s ease}
+.ffix b{color:var(--red)}
+.fpoints ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.fpoints li{display:flex;gap:8px;align-items:flex-start;background:#fff;border-radius:12px;padding:8px 10px;font-weight:700;font-size:1rem;line-height:1.5;
+  border:2px solid rgba(36,50,61,.12);transition:background .2s,border-color .2s}
+.fpoints li i{flex:none;font-style:normal;width:1.6em;height:1.6em;border-radius:50%;background:#c3ccd2;color:#fff;display:grid;place-items:center;font-size:.85rem}
+.fpoints li.ok{background:var(--green-bg);border-color:var(--green)}
+.fpoints li.ok i{background:var(--green)}
+
 /* ===== 重要語句（ひな形1・つなぐ言葉と同じつくり：12まいずつ） ===== */
 .wdocs{flex:1;display:grid;grid-template-columns:1.6fr 1fr;gap:.55rem;min-height:0}
 .wboard{position:relative;background:var(--wcard);border:1px solid var(--wline);border-radius:14px;padding:.5rem;
@@ -299,6 +334,9 @@ h1 .b{color:var(--blue)}h1 .o{color:var(--orange)}h1 .g{color:var(--green)}
   .opt{padding:12px 4px}
   .wdocs{grid-template-columns:1fr;grid-template-rows:minmax(420px,1.9fr) auto;flex:none}
   .wgrid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr))}
+  .pgrid{grid-template-columns:1fr;grid-auto-rows:auto;flex:none}
+  .fixwrap{grid-template-columns:1fr;flex:none}
+  .fixwrap .box{overflow:visible}
 }
 @media (max-height:720px) and (min-width:761px){
   .sent{line-height:1.7}
@@ -364,6 +402,8 @@ const TABS = [
   {view:'sort',   tab:'③ なかま分け',       sub:'始め・中・終わり'},
   {view:'order',  tab:'④ ならべかえ',       sub:'中ページのじゅん'},
   {view:'memo',   tab:'⑤ メモを作ろう',     sub:'自分の生き物で'},
+  {view:'pair',   tab:'⑥ まとまり',         sub:'組になるだん落'},
+  {view:'fix',    tab:'⑦ 見直そう',         sub:'下書きのまちがい'},
   {view:'words',  tab:'重要語句',           sub:'ことばのいみ'}
 ];
 
@@ -414,6 +454,12 @@ const QUIZ = {
      e:'「思いました」は、調べたことから<b>自分が思ったこと</b>。'},
     {tag:'これは何のだん落？', q:'みなさんも、水族館でチンアナゴを見つけたら、じっくり見てみてください。', o:['答え','引用','よびかけ','自分の考え'], a:2,
      e:'読み手に「〜してください」と<b>よびかけている</b>。'},
+    {tag:'あてはまるつなぎの言葉は？', q:'パンダは、どうして竹やささばかり食べるのでしょうか。<br>□、パンダは、ほかの動物と食べ物をとりあわないように、竹やささを食べるのでしょう。', o:['また','つまり','でも'], a:1,
+     e:'問いに対する<b>答え</b>をまとめるときは「つまり」。'},
+    {tag:'あてはまるつなぎの言葉は？', q:'本には、「本当は、竹やささのほかの物も食べられる。」と書いてありました。<br>□、し育員さんからは、「ほかの動物は、ふつう竹やささを食べない。」と聞きました。', o:['つまり','でも','また'], a:2,
+     e:'調べたことに、べつの調べたことを<b>つけ足す</b>ときは「また」。'},
+    {tag:'あてはまるつなぎの言葉は？', q:'ワニは、こわい生き物だと思っていました。<br>□、図かんで調べると、子どもをだいじに守る、やさしい一面もあると分かりました。', o:['でも','また','つまり'], a:0,
+     e:'前に書いたことと<b>反対のこと</b>を書くときは「でも」。'},
     {tag:'どのページに書く？', q:'「何の生き物について伝えたいか（テーマ）」を書くのは、どのページ？', o:['表紙','中ページ','うら表紙'], a:0,
      e:'テーマは<b>表紙（始め）</b>。題名や名前といっしょに書く。'},
     {tag:'どのページに書く？', q:'問いと答え、調べたこと、自分の考えをくわしく書くのは、どのページ？', o:['表紙','中ページ','うら表紙'], a:1,
@@ -421,9 +467,13 @@ const QUIZ = {
     {tag:'どのページに書く？', q:'リーフレットの題名と、書いた人の名前を書くのは、どのページ？', o:['表紙','中ページ','うら表紙'], a:0,
      e:'題名と名前は<b>表紙（始め）</b>。いちばん初めに目に入るところ。'},
     {tag:'どのページに書く？', q:'参考にした本やウェブページを書いておくのは、どのページ？', o:['表紙','中ページ','うら表紙'], a:2,
-     e:'参考にした本などは<b>うら表紙（終わり）</b>。よびかけといっしょに書く。'}
+     e:'参考にした本などは<b>うら表紙（終わり）</b>。よびかけといっしょに書く。'},
+    {tag:'どの題名がよい？', q:'メダカが、冬にえさを食べなくなるわけを調べました。読んでみたくなる題名はどれ？', o:['メダカ','冬のメダカのひみつ','メダカについて書きました'], a:1,
+     e:'何について書いたのかが分かり、「ひみつ」という言葉で<b>読んでみたくなる</b>。'},
+    {tag:'どの題名がよい？', q:'チンアナゴが、すなから体を半分だけ出しているわけを調べました。読んでみたくなる題名はどれ？', o:['海の生き物','チンアナゴの学習','すなからのぞくチンアナゴのなぞ'], a:2,
+     e:'何を伝えたいのかが分かり、「なぞ」という言葉で<b>読んでみたくなる</b>。'}
   ],
-  goodAt:13,
+  goodAt:17,
   msg:{perfect:'ぜんもんせいかい！ だん落のやくわりが、よく分かっているね。',
        good:'あと少し！ まちがえた問題を、もう一度考えてみよう。',
        low:'①のタブをもう一度見てから、ちょうせんしよう。'}
@@ -486,6 +536,138 @@ const MEMO = {
     a:'つまり、ほかの動物と食べ物をとりあわないためだろう。',
     my:'パンダの生きるちえを感じた。',
     call:'いちど、動物園でパンダを見てほしい。'}
+};
+
+/* ---- ⑥ まとまり：組になるだん落を2まいえらぶ ---- */
+const PAIR = {
+  lead:'組になる（まとまりになる）だん落を、2まいえらぼう。分からないときは「ヒント」をおそう。',
+  leadHint:'「問い」と「答え」、「調べたこと」と「考えたこと」が組になるよ。同じ生き物の話かどうかも見よう。',
+  names:['問いと答え','調べたことと考えたこと','問いと答え','調べたことと考えたこと'],
+  items:[
+    {g:'問い',       t:'パンダは、どうして竹やささばかり食べるのでしょうか。', p:0},
+    {g:'答え',       t:'つまり、パンダは、ほかの動物と食べ物をとりあわないように、竹やささを食べるのでしょう。', p:0},
+    {g:'調べたこと', t:'パンダは、1日に20キログラムほど竹やささを食べるそうです。', p:1},
+    {g:'考えたこと', t:'わたしは、そんなにたくさん食べることに、おどろきました。', p:1},
+    {g:'問い',       t:'チンアナゴは、なぜ体を半分だけ、すなから出しているのでしょうか。', p:2},
+    {g:'答え',       t:'このように、チンアナゴは、きけんなときにすぐにげられるように、体を半分だけ出しているのです。', p:2},
+    {g:'調べたこと', t:'ペットショップの店員さんに聞くと、メダカは、水が冷たくなると、あまりえさを食べなくなるそうです。', p:3},
+    {g:'考えたこと', t:'ぼくは、冬は、メダカのえさを少なめにしてあげようと思いました。', p:3}
+  ],
+  ok:'ぜんぶ見つけたね！ まとまりを考えて書くと、分かりやすい文章になるよ。'
+};
+
+/* ---- ⑦ 見直そう：下書きのまちがいを見つける ---- */
+const FIX = {
+  lead:'下書きを見直そう。まちがっているところを見つけて、おしてね。（4つあるよ）',
+  leadHint:'色のついた文を、右の「見直すところ」とくらべながら読んでみよう。',
+  points:['だん落の始めは、一字下げているか','字や言葉のまちがいはないか','引用に、かぎ（「　」）をつけているか','問いと答えが合っているか'],
+  paras:[
+    {s:[{t:'前に、動物園に行ったとき、パンダが竹やささばかり食べていて、気になりました。'},
+        {t:'パンダわ、1日に20キログラムほど食べるそうです。', ng:{p:1, fix:'パンダ<b>は</b>、1日に20キログラムほど食べるそうです。', e:'「パンダわ」ではなく「パンダは」と書くよ。'}}]},
+    {s:[{t:'パンダは、どうして竹やささばかり食べるのでしょうか。'}]},
+    {s:[{t:'本には、本当は、竹やささのほかの物も食べられます。と書いてありました。', ng:{p:2, fix:'本には、<b>「</b>本当は、竹やささのほかの物も食べられます。<b>」</b>と書いてありました。', e:'本の言葉をそのままのせるときは、かぎ（「　」）をつけるよ。'}}]},
+    {noind:true, s:[{t:'し育員さんに取材すると、ほかの動物は、ふつう竹やささを食べないと教えてくれました。', ng:{p:0, fix:'新しいだん落なので、行の始めを<b>一字下げる</b>。', e:'新しいだん落の始めは、一字下げて書くよ。'}}]},
+    {s:[{t:'つまり、パンダは、白と黒の毛でおおわれているのです。', ng:{p:3, fix:'つまり、パンダは、<b>ほかの動物と食べ物をとりあわないように、竹やささを食べる</b>のでしょう。', e:'問いは「どうして竹やささばかり食べるのか」。答えにも、そのわけを書くよ。'}}]},
+    {s:[{t:'そこに、パンダの生きるためのちえを感じました。'}]}
+  ],
+  ok:'ぜんぶ見つけたね！ 見直しをすると、読みやすい文章になるよ。'
+};
+
+/* ===== ⑥ まとまりのうごき ===== */
+let pOrder=null, pSel=null, pDone=null, pNg=[], pMsg='', pHint=false, pCount=0;
+function pairStart(){ pOrder=shuffle(PAIR.items.map((_,i)=>i)); pSel=null; pDone=PAIR.names.map(()=>-1); pNg=[]; pMsg=''; pHint=false; pCount=0; }
+VIEWS.pair = function(){
+  if(!pOrder) pairStart();
+  const all=PAIR.names.length;
+  const msg=pMsg||(pSel!==null?'もう1まいは、どれかな？ 組になるカードをおそう。':(pHint?PAIR.leadHint:PAIR.lead));
+  panel.innerHTML=`
+    <div class="bar">
+      <div class="lead">${msg}</div>
+      <span class="pcount">まとまり ${pCount} / ${all}</span>
+      <button class="btn" id="pHint">${pHint?'ヒントをけす':'ヒント'}</button>
+      <button class="btn" id="pReset">もう一度</button>
+    </div>
+    <div class="pgrid">${pOrder.map(i=>{
+      const it=PAIR.items[i], d=pDone[it.p];
+      const cls=d>=0?`done pp${d}`:(pSel===i?'sel':(pNg.includes(i)?'ng':''));
+      const tag=d>=0?`<span class="pbadge">まとまり${d+1}：${PAIR.names[it.p]}</span>`:(pHint?`<span class="ctag">${it.g}</span>`:'');
+      return `<button class="pcard ${cls}" data-i="${i}">${tag}<span>${it.t}</span></button>`;}).join('')}
+    </div>`;
+  panel.querySelectorAll('.pcard').forEach(c=>c.onclick=()=>{
+    const i=+c.dataset.i, it=PAIR.items[i];
+    if(pDone[it.p]>=0) return;
+    pNg=[]; pMsg='';
+    if(pSel===null){ pSel=i; VIEWS.pair(); return; }
+    if(pSel===i){ pSel=null; VIEWS.pair(); return; }
+    const a=PAIR.items[pSel];
+    if(a.p===it.p){
+      pDone[it.p]=pCount++; pSel=null;
+      if(pCount===all){ pMsg=PAIR.ok; pinpon(); setTimeout(party,150); }
+      else { pMsg=`せいかい！「${a.g}」と「${it.g}」のまとまりだね。`; pinpon(); }
+    }else{
+      pNg=[pSel,i]; pSel=null;
+      if(a.g===it.g) pMsg=`どちらも「${a.g}」だね。同じやくわりのカードどうしは、組にならないよ。`;
+      else if(PAIR.names[a.p]===PAIR.names[it.p]) pMsg='ちがう生き物の話だね。同じ生き物のカードをさがそう。';
+      else pMsg='その2まいは、組にならないよ。「問い」と「答え」、「調べたこと」と「考えたこと」を組にしよう。';
+      bubu();
+    }
+    VIEWS.pair();
+  });
+  $('#pHint').onclick=()=>{ pHint=!pHint; pMsg=''; VIEWS.pair(); };
+  $('#pReset').onclick=()=>{ pairStart(); VIEWS.pair(); };
+};
+
+/* ===== ⑦ 見直そうのうごき ===== */
+let fFound=null, fMiss=null, fMsg='', fHint=false;
+function fixStart(){ fFound={}; fMiss=null; fMsg=''; fHint=false; }
+VIEWS.fix = function(){
+  if(!fFound) fixStart();
+  const all=FIX.paras.reduce((n,pa)=>n+pa.s.filter(x=>x.ng).length,0);
+  const n=Object.keys(fFound).length;
+  const okP=FIX.points.map(()=>false);
+  FIX.paras.forEach((pa,a)=>pa.s.forEach((x,b)=>{ if(x.ng&&fFound[a+'-'+b]) okP[x.ng.p]=true; }));
+  panel.innerHTML=`
+    <div class="bar">
+      <div class="lead">${fMsg||(fHint?FIX.leadHint:FIX.lead)}</div>
+      <span class="pcount">見つけた数 ${n} / ${all}</span>
+      <button class="btn" id="fHint">${fHint?'ヒントをけす':'ヒント'}</button>
+      <button class="btn" id="fReset">もう一度</button>
+    </div>
+    <div class="fixwrap">
+      <div class="box fpaper">
+        <div class="label">中ページの下書き</div>
+        ${FIX.paras.map((pa,a)=>{
+          const segs=pa.s.map((x,b)=>{
+            const id=a+'-'+b, f=!!fFound[id];
+            const cls=f?'found':(fMiss===id?'miss':(fHint&&x.ng?'hint':''));
+            return `<span class="fseg ${cls}" data-id="${id}" role="button" tabindex="0">${x.t}</span>`;}).join('');
+          const ind=pa.noind&&!pa.s.some((x,b)=>x.ng&&x.ng.p===0&&fFound[a+'-'+b]);
+          const fixes=pa.s.map((x,b)=>x.ng&&fFound[a+'-'+b]?`<div class="ffix">✓ ${x.ng.fix}</div>`:'').join('');
+          return `<p class="fpara ${ind?'noind':''}">${segs}</p>${fixes}`;}).join('')}
+      </div>
+      <div class="box fpoints">
+        <div class="label">見直すところ</div>
+        <ul>${FIX.points.map((t,k)=>`<li class="${okP[k]?'ok':''}"><i>${okP[k]?'✓':k+1}</i>${t}</li>`).join('')}</ul>
+      </div>
+    </div>`;
+  panel.querySelectorAll('.fseg').forEach(el=>{
+    const go=()=>{
+      const id=el.dataset.id; if(fFound[id])return;
+      const [a,b]=id.split('-').map(Number), x=FIX.paras[a].s[b];
+      if(x.ng){
+        fFound[id]=true; fMiss=null;
+        if(Object.keys(fFound).length===all){ fMsg=FIX.ok; pinpon(); setTimeout(party,150); }
+        else { fMsg='見つけた！ '+x.ng.e; pinpon(); }
+      }else{
+        fMiss=id; fMsg='そこは、まちがっていないよ。右の「見直すところ」を見て、もう一度さがそう。'; bubu();
+      }
+      VIEWS.fix();
+    };
+    el.onclick=go;
+    el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
+  });
+  $('#fHint').onclick=()=>{ fHint=!fHint; fMsg=''; fMiss=null; VIEWS.fix(); };
+  $('#fReset').onclick=()=>{ fixStart(); VIEWS.fix(); };
 };
 
 /* ===== ③ なかま分けのうごき ===== */
